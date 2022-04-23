@@ -1,33 +1,42 @@
-package InventoryManagement;
+package InventoryManagement.Controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+import InventoryManagement.DBConnect;
+import InventoryManagement.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class AppController implements Initializable {
 
     private ObservableList<Product> productListView = FXCollections.observableArrayList();
+    private final FilteredList<Product> filteredList = new FilteredList<>(productListView, b -> true);
+    private final SortedList<Product> productSortedList = new SortedList<>(filteredList);
 
     @FXML
     private Button addProd;
 
     @FXML
     private Button deleteProd;
-
-    @FXML
-    private Button editProd;
 
     @FXML
     private TableView<Product> productTable;
@@ -61,7 +70,34 @@ public class AppController implements Initializable {
 
             e.printStackTrace();
         }
+
+        searchProd.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(Product -> {
+            if (newValue.isBlank() || newValue.isEmpty()) {
+                return true;
+            }
+            String searchWord = newValue.toLowerCase();
+            if (Product.getBarcode().toLowerCase().contains(searchWord)) {
+                return true;
+            } else if (Product.getProductName().toLowerCase().contains(searchWord)) {
+                return true;
+            } else if (String.valueOf(Product.getQuantity()).contains(searchWord)) {
+                return true;
+            } else
+                return String.valueOf(Product.getPrice()).contains(searchWord);
+        }));
+        productSortedList.comparatorProperty().bind(productTable.comparatorProperty());
+        productTable.setItems(productSortedList);
     }
+
+    public void addItem() throws IOException {
+
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/add.fxml"));
+        stage.setTitle("Add item");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+      }
 
     private void getProduct() throws SQLException, ClassNotFoundException {
         DBConnect co = new DBConnect();
@@ -74,5 +110,4 @@ public class AppController implements Initializable {
         }
         productTable.setItems(productListView);
     }
-
 }
