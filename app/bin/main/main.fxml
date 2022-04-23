@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="578.0" prefWidth="1038.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="578.0" prefWidth="1038.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.AppController.java">
    <children>
-      <TableView layoutX="10.0" layoutY="14.0" prefHeight="497.0" prefWidth="1013.0">
+      <TableView fx:id="productTable" layoutX="13.0" layoutY="14.0" prefHeight="497.0" prefWidth="1013.0">
         <columns>
-          <TableColumn prefWidth="247.0" text="Barcode" />
-          <TableColumn minWidth="0.0" prefWidth="258.0" text="Product " />
-            <TableColumn prefWidth="169.0" text="Price" />
-            <TableColumn minWidth="9.0" prefWidth="162.0" text="Quantity" />
+          <TableColumn fx:id="barcodeCol" prefWidth="376.0" text="Barcode" />
+          <TableColumn fx:id="productCol" minWidth="0.0" prefWidth="339.0" text="Product " />
+            <TableColumn fx:id="priceCol" minWidth="0.0" prefWidth="137.0" text="Price" />
+            <TableColumn fx:id="quantityCol" minWidth="9.0" prefWidth="186.0" text="Quantity" />
         </columns>
       </TableView>
+      <Button fx:id="deleteProd" layoutX="954.0" layoutY="522.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="69.0" text="Delete" />
+      <Button fx:id="editProd" layoutX="869.0" layoutY="522.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="62.0" text="Edit" />
+      <Button fx:id="addProd" layoutX="785.0" layoutY="522.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="62.0" text="Add" />
+      <TextField fx:id="searchProd" layoutX="93.0" layoutY="523.0" />
+      <Label layoutX="13.0" layoutY="524.0" text="Search:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
