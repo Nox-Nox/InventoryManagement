@@ -2,6 +2,7 @@ package InventoryManagement.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -87,17 +88,36 @@ public class AppController implements Initializable {
         }));
         productSortedList.comparatorProperty().bind(productTable.comparatorProperty());
         productTable.setItems(productSortedList);
+
+    }
+
+    public void refresh() throws ClassNotFoundException, SQLException {
+        productListView.clear();
+        getProduct();
+        productTable.refresh();
     }
 
     public void addItem() throws IOException {
-
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/add.fxml"));
         stage.setTitle("Add item");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
-      }
+    }
+
+    public void deleteItem() throws ClassNotFoundException, SQLException {
+        String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+        int index = productTable.getSelectionModel().getSelectedIndex();
+        String query = "DELETE FROM product WHERE barcode = ?";
+        DBConnect co = new DBConnect();
+        PreparedStatement prep = co.connectToDB().prepareStatement(query);
+        prep.setString(1, barcode);
+        prep.execute();
+        productListView.remove(index);
+        productTable.refresh();
+
+    }
 
     private void getProduct() throws SQLException, ClassNotFoundException {
         DBConnect co = new DBConnect();
