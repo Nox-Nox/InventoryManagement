@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-
 public class App extends Application {
 
    @Override
@@ -20,7 +19,6 @@ public class App extends Application {
       primaryStage.setScene(scene);
       primaryStage.show();
    }
-   
 
    public static void main(String[] args) {
       launch();

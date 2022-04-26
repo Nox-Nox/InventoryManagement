@@ -20,7 +20,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -123,6 +122,7 @@ public class AppController implements Initializable {
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, barcode);
         prep.execute();
+        prep.close();
         productListView.remove(index);
         productTable.refresh();
 
@@ -138,20 +138,56 @@ public class AppController implements Initializable {
                     res.getInt("quantity"), res.getFloat("price")));
         }
         productTable.setItems(productListView);
+        stat.close();
     }
 
-
-    public void editBarcode(TableColumn.CellEditEvent e) throws ClassNotFoundException, SQLException{
+    public void editBarcode(TableColumn.CellEditEvent<Product, String> e) throws ClassNotFoundException, SQLException {
         String oldBarcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         String newBarcode = e.getNewValue().toString();
-
         DBConnect co = new DBConnect();
-        String query = "";
+        String query = "UPDATE product SET barcode=? WHERE barcode=?";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
-        
+        prep.setString(1, newBarcode);
+        prep.setString(2, oldBarcode);
+        prep.execute();
+        prep.close();
+
     }
 
-    public void editProduct(){}
-    public void editPrice(){}
-    public void editQuantity(){}
+    public void editProduct(TableColumn.CellEditEvent<Product, String> e) throws ClassNotFoundException, SQLException {
+        String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+        String newProduct = e.getNewValue().toString();
+        DBConnect co = new DBConnect();
+        String query = "UPDATE product SET productName=? WHERE barcode=?";
+        PreparedStatement prep = co.connectToDB().prepareStatement(query);
+        prep.setString(1, newProduct);
+        prep.setString(2, barcode);
+        prep.execute();
+        prep.close();
+    }
+
+    public void editPrice(TableColumn.CellEditEvent<Product, Float> e) throws ClassNotFoundException, SQLException {
+        String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+        String newPrice = e.getNewValue().toString();
+        DBConnect co = new DBConnect();
+        String query = "UPDATE product SET price=? WHERE barcode=?";
+        PreparedStatement prep = co.connectToDB().prepareStatement(query);
+        prep.setString(1, newPrice);
+        prep.setString(2, barcode);
+        prep.execute();
+        prep.close();
+    }
+
+    public void editQuantity(TableColumn.CellEditEvent<Product, Integer> e)
+            throws ClassNotFoundException, SQLException {
+        String oldBarcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+        String newBarcode = e.getNewValue().toString();
+        DBConnect co = new DBConnect();
+        String query = "UPDATE product SET quantity=? WHERE barcode=?";
+        PreparedStatement prep = co.connectToDB().prepareStatement(query);
+        prep.setString(1, newBarcode);
+        prep.setString(2, oldBarcode);
+        prep.execute();
+        prep.close();
+    }
 }
