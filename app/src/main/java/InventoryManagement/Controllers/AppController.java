@@ -20,18 +20,22 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class AppController implements Initializable {
 
     private ObservableList<Product> productListView = FXCollections.observableArrayList();
-    private final FilteredList<Product> filteredList = new FilteredList<>(productListView, b -> true);
-    private final SortedList<Product> productSortedList = new SortedList<>(filteredList);
+    private FilteredList<Product> filteredList = new FilteredList<>(productListView, b -> true);
+    private SortedList<Product> productSortedList = new SortedList<>(filteredList);
 
     @FXML
     private Button addProd;
@@ -89,6 +93,11 @@ public class AppController implements Initializable {
         productSortedList.comparatorProperty().bind(productTable.comparatorProperty());
         productTable.setItems(productSortedList);
 
+        productTable.setEditable(true);
+        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        priceCol.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
+        productCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
     }
 
     public void refresh() throws ClassNotFoundException, SQLException {
@@ -130,4 +139,19 @@ public class AppController implements Initializable {
         }
         productTable.setItems(productListView);
     }
+
+
+    public void editBarcode(TableColumn.CellEditEvent e) throws ClassNotFoundException, SQLException{
+        String oldBarcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+        String newBarcode = e.getNewValue().toString();
+
+        DBConnect co = new DBConnect();
+        String query = "";
+        PreparedStatement prep = co.connectToDB().prepareStatement(query);
+        
+    }
+
+    public void editProduct(){}
+    public void editPrice(){}
+    public void editQuantity(){}
 }
