@@ -14,11 +14,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class SellModeController implements Initializable {
-    public SellModeController() throws IOException {
-        super();
-    }
+
 
     private ObservableList<Product> productListView = FXCollections.observableArrayList();
 
@@ -40,13 +39,15 @@ public class SellModeController implements Initializable {
     @FXML
     private TableColumn<Product, Integer> stockCol;
 
-    FXMLLoader loader = new FXMLLoader(SellModeController.class.getResource("/main.fxml"));
-    Parent sceneFXML = loader.load();
-    // getting controller object
-    AppController ctrl = loader.getController();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        barcodeCol.setCellValueFactory(new PropertyValueFactory<>("Barcode"));
+        productCol.setCellValueFactory(new PropertyValueFactory<>("ProductName"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
 
     }
 
