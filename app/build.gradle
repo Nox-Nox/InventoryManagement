@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13.2'
+    
     implementation files ('/home/tahmid/Documents/lib/h2-2.1.210.jar')
 
     // This dependency is used by the application.

@@ -69,7 +69,7 @@ public class AppController implements Initializable {
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
 
         try {
-            getProduct();
+            getProduct(productListView, productTable);
         } catch (ClassNotFoundException | SQLException e) {
 
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class AppController implements Initializable {
 
     public void refresh() throws ClassNotFoundException, SQLException {
         productListView.clear();
-        getProduct();
+        getProduct(productListView, productTable);
         productTable.refresh();
     }
 
@@ -111,6 +111,15 @@ public class AppController implements Initializable {
         stage.setTitle("Add item");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    public void sellMode() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/sellMode.fxml"));
+        stage.setTitle("Sell mode");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setScene((new Scene(root)));
         stage.show();
     }
 
@@ -128,13 +137,13 @@ public class AppController implements Initializable {
 
     }
 
-    private void getProduct() throws SQLException, ClassNotFoundException {
+    public void getProduct(ObservableList<Product> productList, TableView<Product> productTable) throws SQLException, ClassNotFoundException {
         DBConnect co = new DBConnect();
         String query = "SELECT* FROM PRODUCT";
         Statement stat = co.connectToDB().createStatement();
         ResultSet res = stat.executeQuery(query);
         while (res.next()) {
-            productListView.add(new Product(res.getString("barcode"), res.getString("productName"),
+            productList.add(new Product(res.getString("barcode"), res.getString("productName"),
                     res.getInt("quantity"), res.getFloat("price")));
         }
         productTable.setItems(productListView);
@@ -190,4 +199,5 @@ public class AppController implements Initializable {
         prep.execute();
         prep.close();
     }
+
 }
