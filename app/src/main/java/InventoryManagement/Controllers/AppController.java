@@ -63,10 +63,10 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        barcodeCol.setCellValueFactory(new PropertyValueFactory<>("Barcode"));
-        productCol.setCellValueFactory(new PropertyValueFactory<>("ProductName"));
-        priceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
-        quantityCol.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+        barcodeCol.setCellValueFactory(new PropertyValueFactory<Product, String>("Barcode"));
+        productCol.setCellValueFactory(new PropertyValueFactory<Product, String>("ProductName"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("Price"));
+        quantityCol.setCellValueFactory(new PropertyValueFactory<Product, Integer>("Quantity"));
 
         try {
             getProduct(productListView, productTable);
@@ -80,9 +80,9 @@ public class AppController implements Initializable {
                 return true;
             }
             String searchWord = newValue.toLowerCase();
-            if (Product.getBarcode().toLowerCase().contains(searchWord)) {
+            if (Product.getBarcode().toString().toLowerCase().contains(searchWord)) {
                 return true;
-            } else if (Product.getProductName().toLowerCase().contains(searchWord)) {
+            } else if (Product.getProductName().toString().toLowerCase().contains(searchWord)) {
                 return true;
             } else if (String.valueOf(Product.getQuantity()).contains(searchWord)) {
                 return true;
@@ -114,7 +114,7 @@ public class AppController implements Initializable {
         stage.show();
     }
 
-    public void sellMode() throws IOException{
+    public void sellMode() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/sellMode.fxml"));
         stage.setTitle("Sell mode");
@@ -137,7 +137,8 @@ public class AppController implements Initializable {
 
     }
 
-    public void getProduct(ObservableList<Product> productList, TableView<Product> productTable) throws SQLException, ClassNotFoundException {
+    public void getProduct(ObservableList<Product> productList, TableView<Product> productTable)
+            throws SQLException, ClassNotFoundException {
         DBConnect co = new DBConnect();
         String query = "SELECT* FROM PRODUCT";
         Statement stat = co.connectToDB().createStatement();
