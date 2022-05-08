@@ -5,13 +5,13 @@ public class Product {
   String productName;
   Integer quantity;
   Float price;
+  int q;
 
   public Product(
-    String barcode,
-    String productName,
-    Integer quantity,
-    Float price
-  ) {
+      String barcode,
+      String productName,
+      Integer quantity,
+      Float price) {
     this.barcode = barcode;
     this.productName = productName;
     this.quantity = quantity;
@@ -19,7 +19,8 @@ public class Product {
   }
 
   public Integer getQuantity1() {
-    return 1;
+
+    return q;
   }
 
   public String getBarcode() {
@@ -56,8 +57,6 @@ public class Product {
 
   @Override
   public String toString() {
-    return (
-      "{" + barcode + "=" + productName + " " + quantity + " " + price + "}"
-    );
+    return ("{" + barcode + "=" + productName + " " + quantity + " " + price + "}");
   }
 }

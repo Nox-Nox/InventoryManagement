@@ -12,13 +12,17 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class SellModeController implements Initializable {
         private ObservableList<Product> productListView = FXCollections.observableArrayList();
@@ -47,8 +51,11 @@ public class SellModeController implements Initializable {
         @FXML
         private TextField searchID;
 
+        @FXML
+        private Label totalID;
+
         String search;
-        String code1 = "";
+        String formattedCode = "";
         String code = "";
         StringBuffer lol = new StringBuffer();
 
@@ -60,30 +67,25 @@ public class SellModeController implements Initializable {
                         @Override
                         public void handle(KeyEvent event) {
                                 if (!event.getCode().equals(KeyCode.ENTER)) {
-                                        // CODE HERE WHEN USER CLICK ENTER OR SOMETHIN LIKE THAT
 
                                         code = event.getText();
-                                        code1 = code1.concat(code);
+                                        formattedCode = formattedCode.concat(code);
                                         System.out.println(code);
                                 } else {
-                                        // DETECT KEYCODE OTHER THAN ENTER TO GET THEM
-                                        System.out.println(code1);
+
+                                        System.out.println(formattedCode);
                                         try {
-                                                getProductByBarcode(code1);
+                                                getProductByBarcode(formattedCode);
+                                                Total(productListView);
                                         } catch (ClassNotFoundException | SQLException e) {
-                                                // TODO Auto-generated catch block
+
                                                 e.printStackTrace();
                                         }
-                                        code1 = "";
-
-                                        // STORE kc SOMEHWERE AND USE IT
-
+                                        formattedCode = "";
                                 }
-                                event.consume(); // USED TO DENY TO NOT ALLOW TEXTFIELD TO HEAR THE KEYPRESSED
-
+                                event.consume();
                         }
                 });
-                System.out.println(code1);
 
                 barcodeCol.setCellValueFactory(
                                 new PropertyValueFactory<Product, String>("Barcode"));
@@ -95,12 +97,16 @@ public class SellModeController implements Initializable {
                                 new PropertyValueFactory<Product, Integer>("Quantity1"));
                 stockCol.setCellValueFactory(
                                 new PropertyValueFactory<Product, Integer>("Quantity"));
+
+                productTable.setEditable(true);
+                quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+                priceCol.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
         }
 
         private void getProductByBarcode(String code)
                         throws ClassNotFoundException, SQLException {
 
-                System.out.println(code1);
+                System.out.println(formattedCode);
                 DBConnect co = new DBConnect();
                 String query = "SELECT* FROM product WHERE barcode=?";
                 PreparedStatement prep = co.connectToDB().prepareStatement(query);
@@ -118,35 +124,36 @@ public class SellModeController implements Initializable {
                 prep.close();
         }
 
+        private void Total(ObservableList<Product> product) {
+                float tot = 0;
+                for (Product p : product) {
+
+                        int q = p.getQuantity1();
+                        float pr = p.getPrice();
+                        tot += (pr * q);
+                }
+                totalID.setText("Total: " + tot);
+        }
+
         public void editPrice(TableColumn.CellEditEvent<Product, Float> e)
                         throws ClassNotFoundException, SQLException {
-                String barcode = productTable
-                                .getSelectionModel()
-                                .getSelectedItem()
-                                .getBarcode();
-                String newPrice = e.getNewValue().toString();
-                DBConnect co = new DBConnect();
-                String query = "UPDATE product SET price=? WHERE barcode=?";
-                PreparedStatement prep = co.connectToDB().prepareStatement(query);
-                prep.setString(1, newPrice);
-                prep.setString(2, barcode);
-                prep.execute();
-                prep.close();
+
+                float newPrice = e.getNewValue();
+                Product p = productTable.getSelectionModel().getSelectedItem();
+                p.setPrice(newPrice);
+                int index = productTable.getSelectionModel().getSelectedIndex();
+                productListView.set(index, p);
+                productTable.refresh();
         }
 
         public void editQuantity(TableColumn.CellEditEvent<Product, Integer> e)
                         throws ClassNotFoundException, SQLException {
-                String oldBarcode = productTable
-                                .getSelectionModel()
-                                .getSelectedItem()
-                                .getBarcode();
-                String newBarcode = e.getNewValue().toString();
-                DBConnect co = new DBConnect();
-                String query = "UPDATE product SET quantity=? WHERE barcode=?";
-                PreparedStatement prep = co.connectToDB().prepareStatement(query);
-                prep.setString(1, newBarcode);
-                prep.setString(2, oldBarcode);
-                prep.execute();
-                prep.close();
+
+                float newQuantity = e.getNewValue();
+                Product p = productTable.getSelectionModel().getSelectedItem();
+                p.setPrice(newQuantity);
+                int index = productTable.getSelectionModel().getSelectedIndex();
+                productListView.set(index, p);
+                productTable.refresh();
         }
 }
