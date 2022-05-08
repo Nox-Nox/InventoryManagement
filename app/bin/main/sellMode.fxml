@@ -2,10 +2,9 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.Controllers.SellModeController">
+<AnchorPane fx:id="sellModeWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.Controllers.SellModeController">
    <children>
       <TableView fx:id="productTable" layoutX="15.0" layoutY="14.0" prefHeight="428.0" prefWidth="875.0">
         <columns>
@@ -16,6 +15,5 @@
             <TableColumn fx:id="stockCol" prefWidth="114.0" text="Stock" />
         </columns>
       </TableView>
-      <TextField fx:id="searchID" layoutX="367.0" layoutY="461.0" onAction="#getProductByBarcode" />
    </children>
 </AnchorPane>
