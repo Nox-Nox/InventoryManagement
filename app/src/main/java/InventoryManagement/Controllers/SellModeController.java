@@ -94,9 +94,9 @@ public class SellModeController implements Initializable {
                 priceCol.setCellValueFactory(
                                 new PropertyValueFactory<Product, Float>("Price"));
                 quantityCol.setCellValueFactory(
-                                new PropertyValueFactory<Product, Integer>("Quantity1"));
-                stockCol.setCellValueFactory(
                                 new PropertyValueFactory<Product, Integer>("Quantity"));
+                stockCol.setCellValueFactory(
+                                new PropertyValueFactory<Product, Integer>("Stock"));
 
                 productTable.setEditable(true);
                 quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
@@ -112,12 +112,14 @@ public class SellModeController implements Initializable {
                 PreparedStatement prep = co.connectToDB().prepareStatement(query);
                 prep.setString(1, code);
                 ResultSet res = prep.executeQuery();
+                int q = 1;
                 if (res.next()) {
                         productListView.add(
                                         new Product(
                                                         res.getString("barcode"),
                                                         res.getString("productName"),
-                                                        res.getInt("quantity"),
+                                                        res.getInt("stock"),
+                                                        q,
                                                         res.getFloat("price")));
                 }
                 productTable.setItems(productListView);
@@ -128,7 +130,7 @@ public class SellModeController implements Initializable {
                 float tot = 0;
                 for (Product p : product) {
 
-                        int q = p.getQuantity1();
+                        int q = p.getQuantity();
                         float pr = p.getPrice();
                         tot += (pr * q);
                 }
@@ -149,9 +151,9 @@ public class SellModeController implements Initializable {
         public void editQuantity(TableColumn.CellEditEvent<Product, Integer> e)
                         throws ClassNotFoundException, SQLException {
 
-                float newQuantity = e.getNewValue();
+                int newQuantity = e.getNewValue();
                 Product p = productTable.getSelectionModel().getSelectedItem();
-                p.setPrice(newQuantity);
+                p.setQuantity(newQuantity);
                 int index = productTable.getSelectionModel().getSelectedIndex();
                 productListView.set(index, p);
                 productTable.refresh();

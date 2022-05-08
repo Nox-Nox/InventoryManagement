@@ -3,24 +3,37 @@ package InventoryManagement;
 public class Product {
   String barcode;
   String productName;
-  Integer quantity;
-  Float price;
-  int q;
+  int stock;
+  float price;
+  int quantity;
 
   public Product(
       String barcode,
       String productName,
-      Integer quantity,
-      Float price) {
+      int stock,
+      int quantity,
+      float price) {
     this.barcode = barcode;
     this.productName = productName;
+    this.stock = stock;
     this.quantity = quantity;
     this.price = price;
   }
 
-  public Integer getQuantity1() {
+  public int getStock() {
+    return stock;
+  }
 
-    return q;
+  public void setStock(int stock) {
+    this.stock = stock;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 
   public String getBarcode() {
@@ -39,14 +52,6 @@ public class Product {
     this.productName = productName;
   }
 
-  public Integer getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(Integer quantity) {
-    this.quantity = quantity;
-  }
-
   public Float getPrice() {
     return price;
   }
@@ -57,6 +62,6 @@ public class Product {
 
   @Override
   public String toString() {
-    return ("{" + barcode + "=" + productName + " " + quantity + " " + price + "}");
+    return ("{" + barcode + "=" + productName + " " + stock + " " + price + "}");
   }
 }

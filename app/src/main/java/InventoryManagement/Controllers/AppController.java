@@ -55,7 +55,7 @@ public class AppController implements Initializable {
     private TableColumn<Product, String> productCol;
 
     @FXML
-    private TableColumn<Product, Integer> quantityCol;
+    private TableColumn<Product, Integer> stockCol;
 
     @FXML
     private TextField searchProd;
@@ -66,7 +66,7 @@ public class AppController implements Initializable {
         barcodeCol.setCellValueFactory(new PropertyValueFactory<Product, String>("Barcode"));
         productCol.setCellValueFactory(new PropertyValueFactory<Product, String>("ProductName"));
         priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("Price"));
-        quantityCol.setCellValueFactory(new PropertyValueFactory<Product, Integer>("Quantity"));
+        stockCol.setCellValueFactory(new PropertyValueFactory<Product, Integer>("Stock"));
 
         try {
             getProduct(productListView, productTable);
@@ -84,7 +84,7 @@ public class AppController implements Initializable {
                 return true;
             } else if (Product.getProductName().toString().toLowerCase().contains(searchWord)) {
                 return true;
-            } else if (String.valueOf(Product.getQuantity()).contains(searchWord)) {
+            } else if (String.valueOf(Product.getStock()).contains(searchWord)) {
                 return true;
             } else
                 return String.valueOf(Product.getPrice()).contains(searchWord);
@@ -93,7 +93,7 @@ public class AppController implements Initializable {
         productTable.setItems(productSortedList);
 
         productTable.setEditable(true);
-        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        stockCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         priceCol.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
         productCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -137,15 +137,16 @@ public class AppController implements Initializable {
 
     }
 
-    public void getProduct(ObservableList<Product> productList, TableView<Product> productTable)
+    private void getProduct(ObservableList<Product> productList, TableView<Product> productTable)
             throws SQLException, ClassNotFoundException {
         DBConnect co = new DBConnect();
         String query = "SELECT* FROM PRODUCT";
         Statement stat = co.connectToDB().createStatement();
         ResultSet res = stat.executeQuery(query);
+        int q = 1;
         while (res.next()) {
             productList.add(new Product(res.getString("barcode"), res.getString("productName"),
-                    res.getInt("quantity"), res.getFloat("price")));
+                    res.getInt("stock"), q, res.getFloat("price")));
         }
         productTable.setItems(productListView);
         stat.close();
@@ -188,7 +189,7 @@ public class AppController implements Initializable {
         prep.close();
     }
 
-    public void editQuantity(TableColumn.CellEditEvent<Product, Integer> e)
+    public void editStock(TableColumn.CellEditEvent<Product, Integer> e)
             throws ClassNotFoundException, SQLException {
         String oldBarcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         String newBarcode = e.getNewValue().toString();
