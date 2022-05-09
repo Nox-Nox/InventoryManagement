@@ -23,6 +23,7 @@
             <Font size="21.0" />
          </font>
       </Label>
-      <Button fx:id="removeID" layoutX="15.0" layoutY="453.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="81.0" text="Remove" />
+      <Button fx:id="removeID" layoutX="15.0" layoutY="453.0" mnemonicParsing="false" onAction="#removeItem" prefHeight="33.0" prefWidth="81.0" text="Remove" />
+      <Button layoutX="113.0" layoutY="453.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="81.0" text="Submit" />
    </children>
 </AnchorPane>

@@ -67,12 +67,10 @@ public class SellModeController implements Initializable {
                         @Override
                         public void handle(KeyEvent event) {
                                 if (!event.getCode().equals(KeyCode.ENTER)) {
-
                                         code = event.getText();
                                         formattedCode = formattedCode.concat(code);
                                         System.out.println(code);
                                 } else {
-
                                         System.out.println(formattedCode);
                                         try {
                                                 getProductByBarcode(formattedCode);
@@ -157,5 +155,22 @@ public class SellModeController implements Initializable {
                 int index = productTable.getSelectionModel().getSelectedIndex();
                 productListView.set(index, p);
                 productTable.refresh();
+        }
+
+        public void removeItem() throws ClassNotFoundException, SQLException {
+                String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+                int index = productTable.getSelectionModel().getSelectedIndex();
+                String query = "DELETE FROM product WHERE barcode = ?";
+                DBConnect co = new DBConnect();
+                PreparedStatement prep = co.connectToDB().prepareStatement(query);
+                prep.setString(1, barcode);
+                prep.execute();
+                prep.close();
+                productListView.remove(index);
+                productTable.refresh();
+        }
+
+        public void Submit() {
+
         }
 }
