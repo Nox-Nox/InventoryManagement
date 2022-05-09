@@ -101,7 +101,10 @@ public class AppController implements Initializable {
 
     public void refresh() throws ClassNotFoundException, SQLException {
         productListView.clear();
+        productTable.getItems().clear();
         getProduct(productListView, productTable);
+        productSortedList.comparatorProperty().bind(productTable.comparatorProperty());
+        productTable.setItems(productSortedList);
         productTable.refresh();
     }
 

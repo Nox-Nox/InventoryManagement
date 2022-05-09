@@ -59,6 +59,7 @@ public class AddController implements Initializable {
         productField.clear();
         quantityField.clear();
         priceField.clear();
+        Platform.runLater(() -> barcodeField.requestFocus());
 
     }
 
