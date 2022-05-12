@@ -128,7 +128,6 @@ public class SellModeController implements Initializable {
         private void Total(ObservableList<Product> product) {
                 float tot = 0;
                 for (Product p : product) {
-
                         int q = p.getQuantity();
                         float pr = p.getPrice();
                         tot += (pr * q);
@@ -138,7 +137,6 @@ public class SellModeController implements Initializable {
 
         public void editPrice(TableColumn.CellEditEvent<Product, Float> e)
                         throws ClassNotFoundException, SQLException {
-
                 float newPrice = e.getNewValue();
                 Product p = productTable.getSelectionModel().getSelectedItem();
                 p.setPrice(newPrice);
@@ -149,7 +147,6 @@ public class SellModeController implements Initializable {
 
         public void editQuantity(TableColumn.CellEditEvent<Product, Integer> e)
                         throws ClassNotFoundException, SQLException {
-
                 int newQuantity = e.getNewValue();
                 Product p = productTable.getSelectionModel().getSelectedItem();
                 p.setQuantity(newQuantity);
@@ -159,9 +156,9 @@ public class SellModeController implements Initializable {
         }
 
         public void removeItem() throws ClassNotFoundException, SQLException {
-                Product p = productTable.getSelectionModel().getSelectedItem();
                 int index = productTable.getSelectionModel().getSelectedIndex();
                 productListView.remove(index);
+                Total(productListView);
                 productTable.refresh();
         }
 
@@ -177,9 +174,9 @@ public class SellModeController implements Initializable {
                         updatedStock = oldStock - quantity;
                         if (updatedStock < 0) {
                                 Alert alert = new Alert(AlertType.INFORMATION);
-                                alert.setTitle("Message Here...");
-                                alert.setHeaderText("Look, an Information Dialog");
-                                alert.setContentText("I have a great message for you!");
+                                alert.setTitle("Warning");
+                                alert.setHeaderText("Not enough in stock");
+                                alert.setContentText("Change quantity please, we don't have that much in the stock");
                                 alert.showAndWait().ifPresent(rs -> {
                                         if (rs == ButtonType.OK) {
                                                 System.out.println("Pressed OK.");
