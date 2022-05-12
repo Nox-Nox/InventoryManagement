@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="sellModeWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.Controllers.SellModeController">
+<AnchorPane fx:id="sellModeWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InventoryManagement.Controllers.SellModeController">
    <children>
       <TableView fx:id="productTable" layoutX="15.0" layoutY="14.0" prefHeight="428.0" prefWidth="875.0">
          <columns>
@@ -24,6 +24,6 @@
          </font>
       </Label>
       <Button fx:id="removeID" layoutX="15.0" layoutY="453.0" mnemonicParsing="false" onAction="#removeItem" prefHeight="33.0" prefWidth="81.0" text="Remove" />
-      <Button layoutX="113.0" layoutY="453.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="81.0" text="Submit" />
+      <Button layoutX="113.0" layoutY="453.0" mnemonicParsing="false" onAction="#Submit" prefHeight="33.0" prefWidth="81.0" text="Submit" />
    </children>
 </AnchorPane>

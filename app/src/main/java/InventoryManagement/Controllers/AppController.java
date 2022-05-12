@@ -194,13 +194,13 @@ public class AppController implements Initializable {
 
     public void editStock(TableColumn.CellEditEvent<Product, Integer> e)
             throws ClassNotFoundException, SQLException {
-        String oldBarcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
-        String newBarcode = e.getNewValue().toString();
+        String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+        String newStock = e.getNewValue().toString();
         DBConnect co = new DBConnect();
-        String query = "UPDATE product SET quantity=? WHERE barcode=?";
+        String query = "UPDATE product SET stock=? WHERE barcode=?";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
-        prep.setString(1, newBarcode);
-        prep.setString(2, oldBarcode);
+        prep.setString(1, newStock);
+        prep.setString(2, barcode);
         prep.execute();
         prep.close();
     }

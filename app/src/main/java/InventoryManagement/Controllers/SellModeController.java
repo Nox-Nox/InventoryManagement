@@ -12,10 +12,13 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
@@ -69,9 +72,7 @@ public class SellModeController implements Initializable {
                                 if (!event.getCode().equals(KeyCode.ENTER)) {
                                         code = event.getText();
                                         formattedCode = formattedCode.concat(code);
-                                        System.out.println(code);
                                 } else {
-                                        System.out.println(formattedCode);
                                         try {
                                                 getProductByBarcode(formattedCode);
                                                 Total(productListView);
@@ -158,19 +159,42 @@ public class SellModeController implements Initializable {
         }
 
         public void removeItem() throws ClassNotFoundException, SQLException {
-                String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
+                Product p = productTable.getSelectionModel().getSelectedItem();
                 int index = productTable.getSelectionModel().getSelectedIndex();
-                String query = "DELETE FROM product WHERE barcode = ?";
-                DBConnect co = new DBConnect();
-                PreparedStatement prep = co.connectToDB().prepareStatement(query);
-                prep.setString(1, barcode);
-                prep.execute();
-                prep.close();
                 productListView.remove(index);
                 productTable.refresh();
         }
 
-        public void Submit() {
+        public void Submit() throws SQLException, ClassNotFoundException {
+                String barcode;
+                int oldStock;
+                int quantity;
+                int updatedStock;
+                for (Product p : productListView) {
+                        barcode = p.getBarcode();
+                        oldStock = p.getStock();
+                        quantity = p.getQuantity();
+                        updatedStock = oldStock - quantity;
+                        if (updatedStock < 0) {
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle("Message Here...");
+                                alert.setHeaderText("Look, an Information Dialog");
+                                alert.setContentText("I have a great message for you!");
+                                alert.showAndWait().ifPresent(rs -> {
+                                        if (rs == ButtonType.OK) {
+                                                System.out.println("Pressed OK.");
+                                        }
+                                });
+                        } else {
+                                String query = "UPDATE product SET stock = ? WHERE barcode = ?";
+                                DBConnect co = new DBConnect();
+                                PreparedStatement prep = co.connectToDB().prepareStatement(query);
+                                prep.setInt(1, updatedStock);
+                                prep.setString(2, barcode);
+                                prep.execute();
+                                prep.close();
+                        }
 
+                }
         }
 }
