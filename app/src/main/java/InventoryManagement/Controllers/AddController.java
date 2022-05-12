@@ -27,11 +27,11 @@ public class AddController implements Initializable {
     private TextField productField;
 
     @FXML
-    private TextField quantityField;
+    private TextField stockField;
 
     String barcode;
     String productName;
-    int quantity;
+    int stock;
     float price;
     DBConnect co = new DBConnect();
 
@@ -44,19 +44,19 @@ public class AddController implements Initializable {
     public void Submit() throws ClassNotFoundException, SQLException {
         barcode = barcodeField.getText();
         productName = productField.getText();
-        quantity = Integer.parseInt(quantityField.getText());
+        stock = Integer.parseInt(stockField.getText());
         price = Float.parseFloat(priceField.getText());
-        String query = "INSERT INTO product (barcode, productname, quantity, price) " + "VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO product (barcode, productname, stock, price) " + "VALUES(?, ?, ?, ?)";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, barcode);
         prep.setString(2, productName);
-        prep.setInt(3, quantity);
+        prep.setInt(3, stock);
         prep.setFloat(4, price);
         prep.execute();
         co.connectToDB().close();
         barcodeField.clear();
         productField.clear();
-        quantityField.clear();
+        stockField.clear();
         priceField.clear();
         Platform.runLater(() -> barcodeField.requestFocus());
 

@@ -15,7 +15,7 @@
       </HBox>
       <TextField fx:id="barcodeField" layoutX="15.0" layoutY="113.0" prefHeight="25.0" prefWidth="248.0" />
       <TextField fx:id="productField" layoutX="299.0" layoutY="113.0" prefHeight="25.0" prefWidth="241.0" />
-      <TextField fx:id="quantityField" layoutX="578.0" layoutY="113.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="stockField" layoutX="578.0" layoutY="113.0" prefHeight="25.0" prefWidth="149.0" />
       <TextField fx:id="priceField" layoutX="748.0" layoutY="113.0" />
       <Label layoutX="117.0" layoutY="63.0" prefHeight="17.0" prefWidth="65.0" text="Barcode" />
       <Label layoutX="395.0" layoutY="63.0" text="Product" />
