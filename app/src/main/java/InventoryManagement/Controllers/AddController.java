@@ -33,6 +33,7 @@ public class AddController implements Initializable {
     String productName;
     int quantity;
     float price;
+    DBConnect co = new DBConnect();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,8 +46,6 @@ public class AddController implements Initializable {
         productName = productField.getText();
         quantity = Integer.parseInt(quantityField.getText());
         price = Float.parseFloat(priceField.getText());
-
-        DBConnect co = new DBConnect();
         String query = "INSERT INTO product (barcode, productname, quantity, price) " + "VALUES(?, ?, ?, ?)";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, barcode);

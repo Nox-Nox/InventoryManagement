@@ -60,6 +60,8 @@ public class AppController implements Initializable {
     @FXML
     private TextField searchProd;
 
+    DBConnect co = new DBConnect();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -130,7 +132,6 @@ public class AppController implements Initializable {
         String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         int index = productTable.getSelectionModel().getSelectedIndex();
         String query = "DELETE FROM product WHERE barcode = ?";
-        DBConnect co = new DBConnect();
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, barcode);
         prep.execute();
@@ -142,7 +143,6 @@ public class AppController implements Initializable {
 
     private void getProduct(ObservableList<Product> productList, TableView<Product> productTable)
             throws SQLException, ClassNotFoundException {
-        DBConnect co = new DBConnect();
         String query = "SELECT* FROM PRODUCT";
         Statement stat = co.connectToDB().createStatement();
         ResultSet res = stat.executeQuery(query);
@@ -158,7 +158,6 @@ public class AppController implements Initializable {
     public void editBarcode(TableColumn.CellEditEvent<Product, String> e) throws ClassNotFoundException, SQLException {
         String oldBarcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         String newBarcode = e.getNewValue().toString();
-        DBConnect co = new DBConnect();
         String query = "UPDATE product SET barcode=? WHERE barcode=?";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, newBarcode);
@@ -171,7 +170,6 @@ public class AppController implements Initializable {
     public void editProduct(TableColumn.CellEditEvent<Product, String> e) throws ClassNotFoundException, SQLException {
         String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         String newProduct = e.getNewValue().toString();
-        DBConnect co = new DBConnect();
         String query = "UPDATE product SET productName=? WHERE barcode=?";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, newProduct);
@@ -183,7 +181,6 @@ public class AppController implements Initializable {
     public void editPrice(TableColumn.CellEditEvent<Product, Float> e) throws ClassNotFoundException, SQLException {
         String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         String newPrice = e.getNewValue().toString();
-        DBConnect co = new DBConnect();
         String query = "UPDATE product SET price=? WHERE barcode=?";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, newPrice);
@@ -196,7 +193,6 @@ public class AppController implements Initializable {
             throws ClassNotFoundException, SQLException {
         String barcode = productTable.getSelectionModel().getSelectedItem().getBarcode();
         String newStock = e.getNewValue().toString();
-        DBConnect co = new DBConnect();
         String query = "UPDATE product SET stock=? WHERE barcode=?";
         PreparedStatement prep = co.connectToDB().prepareStatement(query);
         prep.setString(1, newStock);

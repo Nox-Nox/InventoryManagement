@@ -60,7 +60,7 @@ public class SellModeController implements Initializable {
         String search;
         String formattedCode = "";
         String code = "";
-        StringBuffer lol = new StringBuffer();
+        DBConnect co = new DBConnect();
 
         @Override
         public void initialize(URL location, ResourceBundle resources) {
@@ -106,7 +106,6 @@ public class SellModeController implements Initializable {
                         throws ClassNotFoundException, SQLException {
 
                 System.out.println(formattedCode);
-                DBConnect co = new DBConnect();
                 String query = "SELECT* FROM product WHERE barcode=?";
                 PreparedStatement prep = co.connectToDB().prepareStatement(query);
                 prep.setString(1, code);
@@ -184,7 +183,6 @@ public class SellModeController implements Initializable {
                                 });
                         } else {
                                 String query = "UPDATE product SET stock = ? WHERE barcode = ?";
-                                DBConnect co = new DBConnect();
                                 PreparedStatement prep = co.connectToDB().prepareStatement(query);
                                 prep.setInt(1, updatedStock);
                                 prep.setString(2, barcode);
