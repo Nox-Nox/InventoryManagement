@@ -10,7 +10,7 @@ public class DBConnect {
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         String connArg = "jdbc:h2:/home/tahmid/Documents/Projects/InventoryManagement/app/src/main/H2DB/H2;SCHEMA=ITEMS";
         Class.forName("org.h2.Driver");
-        conn = DriverManager.getConnection(connArg, "root", "dianawhore99");
+        conn = DriverManager.getConnection(connArg, "root", "pass");
         return conn;
     }
 
