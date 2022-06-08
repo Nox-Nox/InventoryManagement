@@ -8,3 +8,6 @@ Unlike the previous project in this one i used:
 - create functions
 - reduce boilerplate code
 - find item with the barcode scanner device without using a text field by adding a listener
+
+
+### Need to make some revisions
