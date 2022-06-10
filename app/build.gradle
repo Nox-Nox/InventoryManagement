@@ -31,7 +31,6 @@ repositories {
 dependencies {
     // Use JUnit test framework.
     
-    implementation files ('/home/tahmid/Documents/lib/h2-2.1.210.jar')
     implementation group: 'com.h2database', name: 'h2', version: '2.1.212'
 
 
